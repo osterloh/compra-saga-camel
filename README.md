@@ -1,4 +1,4 @@
-# compra-saga
+# compra-saga-camel
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -49,10 +49,19 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/compra-saga-1.0.0-SNAPSHOT-runner`
+You can then execute your native executable with: `./target/compra-saga-camel-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
 ## Related Guides
 
+- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing Jakarta REST and more
 - Camel Saga ([guide](https://camel.apache.org/camel-quarkus/latest/reference/extensions/saga.html)): Execute custom actions within a route using the Saga EIP
+
+## Provided Code
+
+### RESTEasy JAX-RS
+
+Easily start your RESTful Web Services
+
+[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
