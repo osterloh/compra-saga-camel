@@ -1,6 +1,7 @@
 package com.osterloh;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.camel.Header;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class CreditService {
         this.fullCredit = 100;
     }
 
-    public void NewOrderValue(Long orderId, int value) {
+    public void newOrderValue(@Header("orderId") Long orderId, @Header("value") int value) {
         if(value > fullCredit) {
             throw  new IllegalStateException("Insufficient balance!");
         }
@@ -25,8 +26,7 @@ public class CreditService {
     }
 
     public void cancelOrderValue(Long id) {
-        fullCredit = fullCredit + orderValue.get(id);
-        orderValue.remove(id);
+    System.out.println("OrderValue failed. Starting the canceling of order.");
     }
 
     public int getFullCredit() {

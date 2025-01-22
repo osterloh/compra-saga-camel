@@ -24,7 +24,7 @@ public class SagaRoute extends RouteBuilder {
 
         //Saga
         from("direct:saga").saga().propagation(SagaPropagation.REQUIRES_NEW).log("Starting the transaction")
-                .to("direct:newOrder").log("Creating new order")
+                .to("direct:newOrder").log("Creating new order with id ${header.id}")
                 .to("direct:newOrderValue").log("Reserving the credit")
                 .to("direct:finish").log("Success!");
 
@@ -42,17 +42,17 @@ public class SagaRoute extends RouteBuilder {
                 .compensation("direct:cancelOrderValue")
                 .transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(creditService, "newOrderValue")
-                .log("Credit of order ${heder.orderId} in value of ${header.value} reserved to the saga ${body}");
+                .log("Credit of order ${header.orderId} in value of ${header.value} reserved to the saga ${body}");
 
         from("direct:cancelOrderValue")
                 .transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(creditService, "cancelOrderValue")
-                .log("Credit of order ${heder.orderId} in value of ${header.value} reserved to the saga ${body}");
+                .log("Credit of order ${header.orderId} in value of ${header.value} reserved to the saga ${body}");
 
         //Finished
-        from("finish").saga().propagation(SagaPropagation.MANDATORY)
+        from("direct:finish").saga().propagation(SagaPropagation.MANDATORY)
                 .choice()
-                .when(header("fail").isEqualTo(true)).to("")
+                .when(header("fail").isEqualTo(true)).to("saga:COMPENSATE")
                 .end();
     }
 }
