@@ -16,7 +16,7 @@ public class CreditService {
         this.fullCredit = 100;
     }
 
-    public void newOrderValue(@Header("orderId") Long orderId, @Header("value") int value) {
+    public void newOrderValue(@Header("id") Long orderId, @Header("value") int value) {
         if(value > fullCredit) {
             throw  new IllegalStateException("Insufficient balance!");
         }

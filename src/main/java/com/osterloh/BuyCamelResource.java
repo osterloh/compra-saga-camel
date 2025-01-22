@@ -30,7 +30,6 @@ public class BuyCamelResource {
         context.createFluentProducerTemplate()
                 .to("direct:saga")
                 .withHeader("id", id)
-                .withHeader("orderId", id)
                 .withHeader("value", value)
                 .request();
     }

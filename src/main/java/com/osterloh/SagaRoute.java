@@ -19,7 +19,7 @@ public class SagaRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-    CamelSagaService sagaService = new InMemorySagaService(); // executa a saga em memoria
+        CamelSagaService sagaService = new InMemorySagaService(); // executa a saga em memoria
         getContext().addService(sagaService);
 
         //Saga
@@ -42,7 +42,7 @@ public class SagaRoute extends RouteBuilder {
                 .compensation("direct:cancelOrderValue")
                 .transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(creditService, "newOrderValue")
-                .log("Credit of order ${header.orderId} in value of ${header.value} reserved to the saga ${body}");
+                .log("Credit of order ${header.id} in value of ${header.value} reserved to the saga ${body}");
 
         from("direct:cancelOrderValue")
                 .transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
@@ -52,7 +52,7 @@ public class SagaRoute extends RouteBuilder {
         //Finished
         from("direct:finish").saga().propagation(SagaPropagation.MANDATORY)
                 .choice()
-                .when(header("fail").isEqualTo(true)).to("saga:COMPENSATE")
                 .end();
+//                .when(header("fail").isEqualTo(true)).to("saga:COMPENSATE")
     }
 }
